@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Job = require("../models/Job");
 const Employee = require("../models/EmployeeProfile");
 const JobSeeker = require("../models/JobSeekerProfile");
+const User = require("../models/User");
 const Application = require("../models/Application");
 
 const getJobSeekerList = async(req,res)=>{
@@ -273,4 +274,21 @@ const deleteJob = async (req, res) => {
   }
 };
 
-module.exports = {getJobSeekerList,getEmployeeList,createJob,getJobsList,updateJob,deleteJob}
+const updateProfile = async(req,res) => {
+try {
+  const {fullname,email} = req.body
+  const id = req.user.id
+  await User.findByIdAndUpdate(id,{fullname,email},{new:true})
+  res.status(200).json({
+    success:true,
+    message:"Profile updated succesfully"
+  })
+} catch (error) {
+  res.status(500).json({
+    success:false,
+    message:error.message
+  })
+}
+}
+
+module.exports = {getJobSeekerList,getEmployeeList,createJob,getJobsList,updateJob,deleteJob,updateProfile}
