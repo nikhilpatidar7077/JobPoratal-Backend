@@ -10,6 +10,8 @@ const adminRoutes = require("./routes/admin.routes");
 dotenv.config()
 const app = express();
 connectDB();
+const cors = require("cors");
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use(express.json());
 app.use("/api/auth",authRoutes)
